@@ -47,9 +47,9 @@ exports.signup = catchAsync(async (req, res, next) => {
         passwordChangedAt: req.body.passwordChangedAt,
     });
     const url = `${req.protocol}://${req.get('host')}`;
-    console.log(url);
+    // console.log(url);
     await new Email(newUser).send({
-        subject: 'Welcome to the Natours Family!',
+        subject: 'Welcome to the AmazingTours Family!',
         message: `Click ${url} to back to the website`
     });
 
