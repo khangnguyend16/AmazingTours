@@ -9,10 +9,12 @@ const xss = require('xss');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
+const bookingController = require('./controllers/bookingController');
 
 // Start express app
 const app = express();
@@ -22,6 +24,18 @@ app.set('views', path.join(__dirname, 'views'))
 
 
 // 1. GLOBAL MIDDLEWARES
+// Implement CORS
+app.use(cors());
+// Access-Control-Allow-Origin: *
+// api.amazingtours.com,  front-end: amazingtours.com
+// app.use(cors({
+//     origin: 'https://www.amazingtours.com'
+// }))
+
+// non-simple requests (patch, put, delete... => preflight request)
+app.options('*', cors())  // cho phép preflight request cho tất cả các API.
+// app.options('/api/v1/tours/:id', cor())  // only this route! 
+
 // Serving static files
 // app.use(express.static(`${__dirname}/public`));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -41,6 +55,9 @@ const limiter = rateLimit({
     message: 'Too many requests from this IP, please try again in an hour!'
 })
 app.use('/api', limiter);
+
+//Stripe Webhook, dữ liệu cần được giữ nguyên dạng thô (raw buffer) để xác thực chữ ký bảo mật (signature) từ Stripe.
+app.post('/webhook-checkout', express.raw({ type: 'application/json' }), bookingController.webhookCheckout);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' })); // Middleware
