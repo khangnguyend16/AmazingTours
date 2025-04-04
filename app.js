@@ -13,6 +13,7 @@ const cookieParser = require('cookie-parser');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
+// Start express app
 const app = express();
 
 app.set('view engine', 'pug');
