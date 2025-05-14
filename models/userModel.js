@@ -81,7 +81,7 @@ userSchema.pre(/^find/, function (next) {
 
 // Instance method: method available on all documents of certain collection
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
-    return await bcrypt.compare(candidatePassword, userPassword);
+    return await bcrypt.compare(candidatePassword, userPassword); // this.password not available because password field -> select : false
 }
 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
