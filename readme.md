@@ -1,3 +1,5 @@
 # AmazingTours Application
 
-Built using modern technologies: node.js, express, mongoDB, mongoose
+Technologies: node.js, express, mongoDB, mongoose, postman
+
+Only Back-end API completed !!!
